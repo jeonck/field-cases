@@ -15,6 +15,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Storage
 
+- [[problems/df-says-the-disk-is-full-du-says-it-is-half-empty|df says the disk is full, du says it is half empty]] — logrotate unlinked the logs, nginx kept the descriptors, and the blocks were never freed.
+
 ## Database
 
 ## Compute
