@@ -11,6 +11,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Network
 
+- [[problems/dns-lookups-intermittently-take-exactly-5-seconds|DNS lookups inside pods intermittently take exactly 5 seconds]] — a conntrack insert race silently drops one of a parallel A/AAAA pair; the 5s is the resolver's own timeout, not the network's.
+
 ## Storage
 
 ## Database
