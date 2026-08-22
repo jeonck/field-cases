@@ -39,6 +39,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Observability
 
+- [[problems/a-40-minute-outage-passed-with-no-alert|A 40-minute outage passed with no alert, and the error-rate panel showed a flat line]] — a metric rename left ~40 critical rules evaluating to an empty vector, which looks exactly like healthy.
+
 ## Capacity
 
 ---
