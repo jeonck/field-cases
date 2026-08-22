@@ -19,6 +19,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Database
 
+- [[problems/the-same-query-is-fast-on-a-fresh-connection-and-slow-after-the-fifth-run|The same query is fast on a fresh connection and slow forever after the fifth run]] — a backfill skewed the data, and the planner's generic plan was built for a value the application never asks for.
+
 ## Compute
 
 ## Auth
