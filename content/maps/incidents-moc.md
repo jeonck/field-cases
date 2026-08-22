@@ -25,6 +25,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Config
 
+- [[problems/prepared-statement-errors-appear-only-under-concurrency|"prepared statement does not exist" appears only under concurrency, never in staging]] — transaction pooling was configured correctly and its consequences were not read.
+
 ## DNS
 
 - [[problems/writes-keep-failing-with-read-only-transaction-after-failover|Writes keep failing with "read-only transaction" long after the failover finished]] — every symptom pointed at the database; the cause was a JVM holding a resolved address for the process lifetime.
