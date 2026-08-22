@@ -84,17 +84,24 @@ The runtime should size itself from the quota, not the node:
 import _ "go.uber.org/automaxprocs"   // reads the cgroup quota at startup
 ```
 
-For services that cannot take the dependency immediately, the downward API does the same job without a code change:
+The downward API does the same job without a code change, and is the usual choice where adding an import across dozens of repositories is the harder half of the problem:
 
 ```yaml
 env:
   - name: GOMAXPROCS
     valueFrom:
       resourceFieldRef:
-        resource: limits.cpu     # rounds up; 500m becomes 1
+        resource: limits.cpu
 ```
 
-Then confirm it actually took effect, because both mechanisms are silent when they fail:
+Two differences from `automaxprocs` matter enough to state, because the YAML is copied more often than it is read:
+
+- **It rounds up, `automaxprocs` rounds down.** `limits.cpu: 2500m` yields `GOMAXPROCS=3` here and `2` there. Rounding up gives back a fraction of the same over-parallelism this note is about — smaller, but in the same direction.
+- **With no `limits.cpu` set, `resourceFieldRef` falls back to the node's allocatable CPU.** A container with only a request therefore gets the node's core count injected, which is precisely the original bug, now written down explicitly in the manifest and looking like a fix. `automaxprocs` leaves `GOMAXPROCS` alone when there is no quota to read.
+
+So: the environment variable is fine where limits are set and enforced, and actively misleading where they are not.
+
+Then confirm it actually took effect, because every one of these mechanisms is silent when it fails:
 
 ```bash
 kubectl exec deploy/orders-api -- sh -c 'cat /sys/fs/cgroup/cpu.stat | grep nr_throttled'
