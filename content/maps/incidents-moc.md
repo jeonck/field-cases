@@ -23,6 +23,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Auth
 
+- [[problems/tls-fails-from-services-but-the-site-loads-fine-in-a-browser|TLS fails from every service, but the site loads fine in a browser]] — nginx served a leaf with no intermediate; only clients that chase AIA could paper over it.
+
 ## Config
 
 - [[problems/prepared-statement-errors-appear-only-under-concurrency|"prepared statement does not exist" appears only under concurrency, never in staging]] — transaction pooling was configured correctly and its consequences were not read.
