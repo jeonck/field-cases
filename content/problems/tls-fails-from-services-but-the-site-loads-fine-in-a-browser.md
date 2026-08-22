@@ -7,7 +7,7 @@ tags:
   - symptom/outage
 status: solved
 severity: P1
-env: "nginx 1.24 terminating TLS / 90-day public CA certificate / automated renewal at 03:00 / Go and Java clients on Alpine"
+env: "nginx 1.24 terminating TLS / 90-day public CA certificate / automated renewal at 03:00 / Go and Java clients on Alpine / follow-up covers 11 internal mTLS services"
 symptom: "x509: certificate signed by unknown authority"
 root_cause: "The renewal deployed the leaf certificate without the intermediate, so nginx served a one-certificate chain. Clients that chase AIA fetched the missing intermediate and succeeded; OpenSSL, Go and Java did not and failed."
 ---
@@ -68,6 +68,8 @@ One certificate. The server was handing clients a leaf and expecting them to alr
 
 The rewritten deployment script copied `cert.pem` where the previous one had copied `fullchain.pem`. Both files exist, both are valid PEM, both contain a certificate for the right hostname, and nginx starts happily with either — the difference is that one of them also contains the intermediate.
 
+The same file mix-up is available in the other direction. Under mTLS the client presents a chain too, and a service configured with a leaf-only client certificate fails in exactly the same way — except that the error is logged by the server it is calling, not by the service that is misconfigured. That variant is covered in the follow-up below; it is the same root cause with the roles reversed.
+
 Clients then sorted themselves by how hard their verifier is willing to work. Browsers on macOS and Windows follow the AIA extension, fetched the intermediate over HTTP, and succeeded. OpenSSL, Go and Java do not chase AIA and failed immediately. Nothing was intermittent and nothing depended on load; the failure was perfectly deterministic per client, which is precisely why the two groups of people on the call could not agree on whether there was an incident.
 
 ## Fix
@@ -99,16 +101,47 @@ openssl verify -CAfile /etc/ssl/certs/ca-certificates.crt -untrusted intermediat
 
 Recovery was a reload, roughly four minutes after the chain length was checked. The preceding hour was spent looking at clients.
 
+### The same fix on the mTLS side
+
+For the internal services that present client certificates, the file to point at is again the one with the intermediates in it, and the server needs a CA bundle deep enough to verify what arrives:
+
+```nginx
+ssl_verify_client       on;
+ssl_client_certificate  /etc/ssl/internal/ca-chain.pem;   # root + issuing intermediates
+ssl_verify_depth        2;                                # default is 1: one intermediate only
+```
+
+The client side is a file choice, not a protocol setting — `curl --cert`, Go's `LoadX509KeyPair`, and a JKS key entry all want leaf **and** intermediates:
+
+```bash
+grep -c 'BEGIN CERTIFICATE' /etc/ssl/svc/client-fullchain.pem   # expect >= 2
+```
+
+The check that actually matters is verifying the client chain against the **root alone**, because that is what removes any help the server's bundle might be silently providing — see [[concepts/certificate-chains|certificate chains and trust stores]]:
+
+```bash
+openssl verify -CAfile ca-root.pem -untrusted client-intermediate.pem client-leaf.pem
+```
+
 ## Prevention
 
 - **Detection:** probe from a client that cannot rescue itself. The existing uptime check ran from a host whose store had the intermediate and stayed green throughout. The replacement is a plain `curl` in a minimal container, plus an alert on served **chain length < 2** — which catches this exact class before a single request fails, since it is checkable at deploy time rather than at renewal time.
-- **Prevention:** the deploy script asserts chain length before reloading, and refuses to install a certificate file containing only one certificate. Renewal is also staged to a canary instance first, which turns a scheduled 03:00 event into an observable one.
-- **Remaining debt:** the internal PKI services deploy through the same script pattern and were not touched. They terminate mTLS, where a broken chain fails in both directions and more confusingly, and nobody has checked whether they point at `cert.pem` or `fullchain.pem`. This is known and not scheduled.
+- **Prevention:** the deploy script asserts chain length before reloading, and refuses to install a certificate file containing only one certificate. The same assertion now runs for client certificates, where it is the only automated check that exists. Renewal is also staged to a canary instance first, which turns a scheduled 03:00 event into an observable one.
+- **Remaining debt:** `ssl_verify_depth` is set to 2 by convention and by nobody's decision. The issuing hierarchy is currently two levels deep, so a third level — which the PKI team could introduce without telling anyone, since it is invisible to every other consumer — fails as `(22:certificate chain too long)` on the server, with the misconfiguration nowhere near the log line. There is no alert for that string and no owner for the convention.
+
+### Follow-up: the internal mTLS services
+
+The audit this note originally left as debt was done a week later, across eleven services presenting client certificates. Three were shipping a leaf-only client certificate, and all three were working.
+
+They worked because the server's `ssl_client_certificate` bundle contains the root **and** the issuing intermediates — which is simply how the PKI team hands the bundle over. Those clients were verifying against a certificate the server already held, not against one they sent. The dependency is accidental and invisible: trimming that bundle to just the root, which is exactly what a hygiene ticket would ask for, breaks all three at once and makes the trim look like the cause.
+
+All three now ship a full chain, and the bundle contents are pinned with a comment explaining what breaks if they shrink. The test that found them is the `openssl verify` against the root alone, above — the end-to-end `curl` passes for a broken client for the same reason production did.
 
 ## Open questions
 
 - Did the browsers succeed by fetching AIA at request time, or because the intermediate was already cached from earlier visits? Never distinguished, and it matters: if it is caching, then a genuinely fresh machine would have failed too, and "it works in a browser" is even less informative than assumed.
 - Why the monitoring probe passed is attributed to the intermediate being present in that host's store — but whether it was installed deliberately, or is a leftover from some earlier debugging, was never established. Nobody knows how many other checks are green for the same reason.
+- Under mTLS, is a leaf-only client certificate ever *correct* because the relying party genuinely pins the intermediate on purpose? Two of the eleven services were configured that way deliberately, according to one engineer, and no document says so. They were changed to send full chains anyway, which may have removed an intentional constraint nobody can now identify.
 - Whether the renewal ever produced a correct `fullchain.pem` that the deploy step then ignored, or whether the ACME step also changed, is unknown. The 03:00 run's logs had rotated by the time anyone thought to read them, which is its own small finding and is not fixed.
 
 ## Related

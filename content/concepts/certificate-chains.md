@@ -34,3 +34,37 @@ openssl s_client -connect example.com:443 -servername example.com -showcerts </d
 ```
 
 One means leaf only. Two or more means a chain is being served. A browser's green padlock does not distinguish these two cases and never will.
+
+## Both directions, under mTLS
+
+With mutual TLS the same obligation runs the other way as well: the **client** presents a chain, and the **server** verifies it against a configured CA bundle. Every rule above holds, mirrored — the client must send its intermediates, because the server is not expected to have them.
+
+Two things change, and they pull in opposite directions.
+
+**It gets easier to diagnose.** No server-side verifier chases AIA. OpenSSL does not, and nginx, HAProxy and Envoy all verify through it. There is no forgiving client to create a "works for me" split, so a leaf-only client certificate fails for everyone, immediately and identically.
+
+**It gets harder to find.** The error is logged by the party that is *not* misconfigured. A service shipping a truncated client certificate produces nothing in its own logs beyond a generic handshake failure; the diagnosis is sitting in the server's error log, on a different host, owned by a different team:
+
+```text
+client SSL certificate verify error: (21:unable to verify the first certificate)
+client SSL certificate verify error: (20:unable to get local issuer certificate)
+client SSL certificate verify error: (22:certificate chain too long)
+```
+
+The first two are the missing-intermediate case. The third is a different trap: nginx defaults to `ssl_verify_depth 1`, which permits a single intermediate. A two-level issuing hierarchy fails there even when the client sends a complete and correct chain.
+
+There is also a way to be broken and not know it. The CA bundle a server uses to verify clients frequently contains root **and** intermediates, because that is how the PKI hands it over. A client sending only its leaf then verifies perfectly — not because it is correct, but because the server happened to already hold the certificate the client should have sent. Trimming that bundle to just the root, which reads like tidying, breaks every such client at once and looks like the trim caused it.
+
+```bash
+# what a client is configured to present — the file, since you cannot s_client yourself
+grep -c 'BEGIN CERTIFICATE' /etc/ssl/svc/client-fullchain.pem     # expect >= 2
+
+# does the chain verify against the root ALONE, with no help from the server's bundle?
+openssl verify -CAfile ca-root.pem -untrusted client-intermediate.pem client-leaf.pem
+
+# end to end, from a host with nothing cached
+curl --cert /etc/ssl/svc/client-fullchain.pem --key /etc/ssl/svc/client.key \
+     https://api.example.internal/health
+```
+
+The middle command is the one worth internalising: verifying against the root **alone** is the only check that distinguishes a correct client from one being carried by the server's bundle.
