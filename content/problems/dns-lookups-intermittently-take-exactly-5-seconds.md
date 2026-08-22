@@ -129,4 +129,6 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/
 
 ## Related
 
-Parent concept: [[concepts/conntrack|conntrack]]. Listed under Network in the [[maps/incidents-moc|incident map]]. No sibling problem note yet — the linking quota in [[meta/note-linking-rules|linking rules]] is short by one until a second note lands.
+Parent concept: [[concepts/conntrack|conntrack]]. Listed under Network in the [[maps/incidents-moc|incident map]].
+
+Sibling: [[problems/writes-keep-failing-with-read-only-transaction-after-failover|writes failing with "read-only transaction" after a failover]]. Both get called "a DNS problem" and neither is one in the same sense — that one is a userspace cache that never re-resolves, this one is a kernel packet drop that the retry fixes. Worth reading together precisely because the label is the only thing they share.
