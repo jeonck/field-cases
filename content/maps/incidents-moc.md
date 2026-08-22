@@ -23,6 +23,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Compute
 
+- [[problems/p99-latency-spikes-while-cpu-utilisation-sits-at-30-percent|p99 latency spikes to 400ms while CPU utilisation sits at 30%]] — bigger nodes multiplied thread count against an unchanged CPU quota; both numbers on the dashboard were correct.
+
 ## Auth
 
 - [[problems/tls-fails-from-services-but-the-site-loads-fine-in-a-browser|TLS fails from every service, but the site loads fine in a browser]] — nginx served a leaf with no intermediate; only clients that chase AIA could paper over it.
