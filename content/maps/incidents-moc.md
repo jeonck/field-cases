@@ -43,6 +43,8 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 
 ## Capacity
 
+- [[problems/connect-fails-with-cannot-assign-requested-address-at-peak|connect() fails with "cannot assign requested address" at peak, and the downstream is healthy]] — an undrained response body on an error path turned every rate-limited request into a burned TCP connection.
+
 ---
 
 Unsure which section a note goes in? Its `root_cause` line is not written yet. Leave it out of the map until it is — see [[meta/capture-workflow|capture workflow]].
