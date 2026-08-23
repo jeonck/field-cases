@@ -25,6 +25,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Compute
 
 - [[problems/p99-latency-spikes-while-cpu-utilisation-sits-at-30-percent|p99 latency spikes to 400ms while CPU utilisation sits at 30%]] — bigger nodes multiplied thread count against an unchanged CPU quota; both numbers on the dashboard were correct.
+- [[problems/pods-restart-every-few-hours-with-nothing-in-the-application-log|Pods restart every few hours with nothing in the application log and the heap at 40%]] — RSS crossed the container limit on memory the JVM does not account for; the kill leaves no evidence inside the process.
 
 ## Auth
 
