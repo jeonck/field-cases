@@ -32,6 +32,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Auth
 
 - [[problems/tls-fails-from-services-but-the-site-loads-fine-in-a-browser|TLS fails from every service, but the site loads fine in a browser]] — nginx served a leaf with no intermediate; only clients that chase AIA could paper over it.
+- [[problems/a-revoked-account-kept-working-for-four-hours|A revoked account kept working for four hours, and nothing anywhere recorded a problem]] — a decision cache added for latency silently became the longest link in the revocation chain.
 
 ## Config
 
