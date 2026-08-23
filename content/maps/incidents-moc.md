@@ -32,6 +32,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Config
 
 - [[problems/prepared-statement-errors-appear-only-under-concurrency|"prepared statement does not exist" appears only under concurrency, never in staging]] — transaction pooling was configured correctly and its consequences were not read.
+- [[problems/consumer-lag-grows-for-hours-while-the-consumers-look-healthy|Consumer lag grows for hours while every consumer is running and logging normally]] — client defaults stopped fitting the workload when a downstream got slower; the group replayed the same batch for four hours.
 
 ## DNS
 
