@@ -17,6 +17,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Storage
 
 - [[problems/df-says-the-disk-is-full-du-says-it-is-half-empty|df says the disk is full, du says it is half empty]] — logrotate unlinked the logs, nginx kept the descriptors, and the blocks were never freed.
+- [[problems/every-query-got-slower-during-business-hours-and-recovered-overnight|Every query got slower during business hours and recovered overnight, for three weeks]] — the volume's I/O credits stopped replenishing overnight; every query slowed by the same factor.
 
 ## Database
 
