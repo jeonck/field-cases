@@ -54,6 +54,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Capacity
 
 - [[problems/connect-fails-with-cannot-assign-requested-address-at-peak|connect() fails with "cannot assign requested address" at peak, and the downstream is healthy]] — an undrained response body on an error path turned every rate-limited request into a burned TCP connection.
+- [[problems/database-cpu-hits-100-percent-for-forty-seconds-at-a-time-that-moves-with-each-deploy|Database CPU hits 100% for forty seconds, at a time that moves with each deploy]] — one hot key, one fixed TTL, forty pods deployed together; raising the TTL had made the herd rarer and no smaller.
 
 ---
 
