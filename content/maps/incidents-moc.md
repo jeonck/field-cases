@@ -47,6 +47,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Observability
 
 - [[problems/a-40-minute-outage-passed-with-no-alert|A 40-minute outage passed with no alert, and the error-rate panel showed a flat line]] — a metric rename left ~40 critical rules evaluating to an empty vector, which looks exactly like healthy.
+- [[problems/all-dashboards-developed-gaps-and-prometheus-restarted-every-twenty-minutes|All dashboards developed gaps and Prometheus restarted every twenty minutes]] — a raw request path used as a label created one time series per order; the WAL replay after each kill was the actual outage.
 
 ## Capacity
 
