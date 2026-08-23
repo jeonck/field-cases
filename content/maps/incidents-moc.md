@@ -21,6 +21,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Database
 
 - [[problems/the-same-query-is-fast-on-a-fresh-connection-and-slow-after-the-fifth-run|The same query is fast on a fresh connection and slow forever after the fifth run]] — a backfill skewed the data, and the planner's generic plan was built for a value the application never asks for.
+- [[problems/every-query-on-one-table-stopped-and-the-migration-had-not-started-yet|Every query on one table stopped, and the migration that caused it had not started yet]] — readers queued behind a lock that was never granted, while the database sat at 4% CPU.
 
 ## Compute
 
