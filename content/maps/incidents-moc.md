@@ -12,6 +12,7 @@ Entries are added by hand when a note is published; see [[meta/note-linking-rule
 ## Network
 
 - [[problems/dns-lookups-intermittently-take-exactly-5-seconds|DNS lookups inside pods intermittently take exactly 5 seconds]] — a conntrack insert race silently drops one of a parallel A/AAAA pair; the 5s is the resolver's own timeout, not the network's.
+- [[problems/intermittent-503s-only-on-the-quiet-endpoints|Intermittent 503s that hit the quiet endpoints and never the busy ones]] — the sidecar held idle connections for an hour against a server that closed them at 60 seconds.
 
 ## Storage
 
