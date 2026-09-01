@@ -1,12 +1,12 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: Sols
+  pageTitle: Field Cases
   pageTitleSuffix: " · ICT problem notes"
   enableSPA: true
   enablePopovers: true
   analytics: null
   locale: en-US
-  baseUrl: sols.metacog.co.kr
+  baseUrl: fieldcases.metacog.co.kr
   ignorePatterns:
     - private
     - templates

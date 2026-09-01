@@ -1,5 +1,5 @@
 ---
-title: "Sols"
+title: "Field Cases"
 description: "Field notes on ICT incidents — symptom first, root cause last, nothing sanitized except the customer's name."
 ---
 

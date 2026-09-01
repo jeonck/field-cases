@@ -1,6 +1,6 @@
 # sols
 
-Public notebook of ICT incidents — [sols.metacog.co.kr](https://sols.metacog.co.kr)
+Field Cases — a public notebook of ICT incidents. [fieldcases.metacog.co.kr](https://fieldcases.metacog.co.kr)
 
 Built with [Quartz v5](https://github.com/jackyzha0/quartz). Notes live in `content/`.
 
