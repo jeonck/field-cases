@@ -45,7 +45,7 @@ Adding a new front matter key means also adding it to `note-properties` → `inc
 
 ## Sections
 
-Start from [the template](https://github.com/jeonck/sols/blob/main/content/templates/problem-template.md): Symptom / Environment / Investigation / Root cause / Fix / Prevention / Open questions / Related.
+Start from [the template](https://github.com/jeonck/field-cases/blob/main/content/templates/problem-template.md): Symptom / Environment / Investigation / Root cause / Fix / Prevention / Open questions / Related.
 
 - **Error messages verbatim, in a code block.** No summarizing, no translating. This is the single biggest factor in whether the note is findable later.
 - Symptom carries three lines: *since when*, *how to reproduce*, *what does not reproduce it*.

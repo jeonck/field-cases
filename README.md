@@ -1,4 +1,4 @@
-# sols
+# field-cases
 
 Field Cases — a public notebook of ICT incidents. [fieldcases.metacog.co.kr](https://fieldcases.metacog.co.kr)
 

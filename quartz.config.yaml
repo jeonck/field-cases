@@ -202,7 +202,7 @@ plugins:
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jeonck/sols
+        GitHub: https://github.com/jeonck/field-cases
     layout:
       position: footer
       priority: 50
