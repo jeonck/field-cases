@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Turn your wounds into wisdom — Field Cases">
+  <defs>
+    <linearGradient id="scar" x1="90" y1="0" x2="1110" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b8695a"/>
+      <stop offset="0.42" stop-color="#a07d6f"/>
+      <stop offset="0.72" stop-color="#84a59d"/>
+      <stop offset="1" stop-color="#84a59d"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#161618"/>
+
+  <!-- baseline -->
+  <line x1="90" y1="492" x2="1110" y2="492" stroke="#ebebec" stroke-opacity="0.10" stroke-width="1"/>
+
+  <!-- the incident: chaos resolving into a flat line -->
+  <polyline
+    points="90,492 150,490.5 210,492.8 258,483.6 300,457.8 330,419 360,469.2 390,372.7 420,484.4 450,430.4 480,350.6 510,478.3 540,414.5 572,483.6 610,463.9 650,482.9 690,488.2 730,490.5 780,491.6 850,492 1110,492"
+    fill="none" stroke="url(#scar)" stroke-width="4"
+    stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- quote -->
+  <text x="90" y="206" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="82" font-weight="600" letter-spacing="-1.5" fill="#ebebec">Turn your wounds</text>
+  <text x="90" y="298" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="82" font-weight="600" letter-spacing="-1.5" fill="#ebebec">into wisdom.</text>
+
+  <!-- wordmark -->
+  <text x="90" y="566" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="22" font-weight="600" letter-spacing="6" fill="#84a59d">FIELD CASES</text>
+  <text x="1110" y="566" text-anchor="end" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="19" letter-spacing="0.5" fill="#ebebec" fill-opacity="0.42">ICT problem notes</text>
+</svg>

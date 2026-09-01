@@ -1,7 +1,10 @@
 ---
 title: "Field Cases"
 description: "Field notes on ICT incidents — symptom first, root cause last, nothing sanitized except the customer's name."
+socialImage: field-cases-og.png
 ---
+
+![Turn your wounds into wisdom. — Field Cases, ICT problem notes](/static/field-cases-og.png)
 
 A public notebook of ICT failures. One document per problem, titled by the **symptom**, because that is what you will search for at 3am six months from now.
 
