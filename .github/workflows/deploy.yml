@@ -29,6 +29,8 @@ jobs:
       - run: npm ci
       - run: npx quartz plugin install --from-config
       - run: npx quartz build
+      - name: Check wikilinks and backlinks
+        run: python3 scripts/check-links.py
       - uses: actions/upload-pages-artifact@v5
         with:
           path: public

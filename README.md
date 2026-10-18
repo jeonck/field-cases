@@ -15,6 +15,19 @@ Built with [Quartz v5](https://github.com/jackyzha0/quartz). Notes live in `cont
 grep -rEn '(AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY|password\s*[:=]\s*\S+)' content/
 ```
 
+## Link check
+
+`scripts/check-links.py` runs in CI between the build and the deploy, so a
+broken link blocks publication. It fails on a wikilink with no target, a
+backlink that the built site dropped, and raw `[[...]]` left in the output.
+
+A `[[a|b]]` inside a markdown table cell must be written `[[a\|b]]`;
+otherwise the pipe splits the cell.
+
+```bash
+npx quartz build && python3 scripts/check-links.py
+```
+
 ## Local
 
 ```bash
