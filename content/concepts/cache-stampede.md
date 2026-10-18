@@ -43,3 +43,5 @@ A cache tuned purely on hit ratio is being tuned on its average behaviour, and t
 ```
 
 Most systems need the first two. The third needs somebody to state how stale a value is allowed to be, and that number is usually as unwritten as everything else in this category — the shape behind [[problems/database-cpu-hits-100-percent-for-forty-seconds-at-a-time-that-moves-with-each-deploy|a database that spikes on a schedule nobody set]].
+
+[[concepts/retry-amplification|Retry amplification]] is the same herd with a different trigger, and the difference decides the rest of the fix. There the callers synchronise because something failed, so the real control is a budget; here they synchronise on a clock, so the real control is single-flight. Jitter belongs in both and is the whole answer in neither.

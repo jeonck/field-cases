@@ -49,3 +49,5 @@ Last State:  Terminated
 ```
 
 An application that dies without explanation, in a container, with a healthy heap, is [[problems/pods-restart-every-few-hours-with-nothing-in-the-application-log|this failure until proven otherwise]]. Budget the whole process, not the heap: `-XX:MaxRAMPercentage` sizes the heap as a fraction of the container limit, which is the only sizing that stays correct when the limit changes.
+
+Two neighbours are worth holding next to this one. [[concepts/cfs-quota-throttling|CPU quota]] is the same arrangement for a different resource — a container limit enforced by the kernel against a runtime that sized itself by asking the machine — and what differs is the price of crossing the line: throttling stops the process and leaves a counter to find, memory kills it and leaves nothing. The heap-against-RSS gap is also the same reading error as [[concepts/unlinked-open-files|`du` against `df`]]: two numbers that are each individually correct, where the entire diagnosis is the difference between them, and nobody thinks to subtract.

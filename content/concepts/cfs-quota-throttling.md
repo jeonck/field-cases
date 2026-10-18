@@ -40,3 +40,5 @@ The runtime decides how many threads compete for that budget, and it usually dec
 So moving to bigger nodes multiplies parallelism while the quota stays fixed, and a container that was fine on a 4-core node is throttled on a 24-core one with no change to its own configuration — the mechanism behind [[problems/p99-latency-spikes-while-cpu-utilisation-sits-at-30-percent|tail latency spiking while CPU utilisation looks healthy]].
 
 The kernel's old slack-expiry bug — over-throttling well below the quota — was fixed in Linux 5.4 and backported widely. On a modern kernel, throttling means the quota was genuinely consumed, and search results suggesting otherwise are describing a machine you are probably not running.
+
+A CPU quota is a budget per period; [[concepts/burst-credits|a burst credit bucket]] is a budget that accumulates over weeks. The mechanics differ and the blind spot is identical — in both cases the ordinary utilisation metric is correct and tells you nothing, because the resource was never saturated. It was forbidden.

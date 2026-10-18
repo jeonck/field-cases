@@ -68,3 +68,5 @@ curl --cert /etc/ssl/svc/client-fullchain.pem --key /etc/ssl/svc/client.key \
 ```
 
 The middle command is the one worth internalising: verifying against the root **alone** is the only check that distinguishes a correct client from one being carried by the server's bundle.
+
+Revoking a certificate before it expires has the problem from the other direction. OCSP responses and CRLs carry their own validity windows, and a stapled response is cached for the length of its own, so a revoked certificate keeps being accepted for as long as the copy a given client holds stays valid. That is [[concepts/revocation-latency|revocation latency]], and it is a chain here for exactly the reason it is one for permissions — every layer that caches an answer extends the time the old answer survives.

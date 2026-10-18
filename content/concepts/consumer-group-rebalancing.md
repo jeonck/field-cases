@@ -47,3 +47,5 @@ kafka-consumer-groups.sh --bootstrap-server broker-1.example.internal:9092 \
 ```
 
 Run it twice a minute apart. Lag rising is ambiguous — it means slow *or* stuck. **`CONSUMER-ID` values changing while no process has restarted** is not ambiguous at all.
+
+Two deadlines that nobody compared is a recurring shape rather than a Kafka quirk — [[concepts/idle-timeout-ordering|idle timeouts on a keep-alive connection]] fail the same way, with one side's limit silently shorter than the other's. The difference is ownership. `session.timeout.ms` and `max.poll.interval.ms` sit in one config file, so reading it carefully is enough; a client timeout and a server timeout belong to two teams, and nothing anywhere shows them side by side.

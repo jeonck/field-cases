@@ -28,3 +28,7 @@ Under transaction pooling, two consecutive statements from the same client may r
 The dangerous half of that list is the half that does not raise an error. Prepared statements fail loudly and get fixed; a `SET search_path` bleeding into another tenant's queries does not, and looks like a data bug months later.
 
 PgBouncer 1.21 added `max_prepared_statements`, which tracks and re-prepares statements per server connection and removes the first item from the list. It does nothing for the rest.
+
+Server-side prepared statements are also where PostgreSQL makes a decision of its own after five executions, described in [[concepts/generic-plans|custom plans and generic plans]]. The two are worth keeping apart: a pooler losing a prepared statement is a routing problem that errors loudly, while the planner switching to a generic plan is a performance decision that errors never. One driver setting disables both, which makes it easy to turn a feature off twice without understanding either failure.
+
+Pooling also changes what blocking costs. A session waiting on a lock holds its server connection for the whole wait, so [[concepts/lock-queues|a lock queue]] drains the pool and the first symptom is connection exhaustion, not anything that mentions locks. A small pool makes a long wait expensive for everyone sharing it.

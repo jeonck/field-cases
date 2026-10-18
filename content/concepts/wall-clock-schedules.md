@@ -31,3 +31,5 @@ kubectl get jobs -l app=reconciliation \
 ```
 
 Timestamps with **different UTC offsets for the same local hour** are conclusive, and they are the only artefact that distinguishes this from a duplicate trigger — which is [[problems/the-nightly-reconciliation-ran-twice-and-both-runs-logged-success|what it looks like from the data]].
+
+The idempotency rule above is not really about schedules. It is the bargain behind a safe [[concepts/retry-amplification|retry policy]] as well: rather than enumerate every way a thing might happen twice — a DST transition, a controller restart, a retry, an operator pressing a button — make the second occurrence cost nothing. Preventing duplication requires being right about all of its causes. Absorbing it does not.

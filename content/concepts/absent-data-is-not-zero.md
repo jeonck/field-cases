@@ -39,3 +39,5 @@ The shape is not specific to one system. Any check that asks "is this number too
 - a dashboard panel showing a flat line, which reads as calm and means empty
 
 The general form: **an alert can only tell you about data it receives, and nothing about data it stops receiving.** Monitoring that a signal exists is a separate job from monitoring its value, and it is the one that gets left out — see [[problems/a-40-minute-outage-passed-with-no-alert|a 40-minute outage that raised nothing at all]].
+
+The opposite failure is the same shape from the other end: [[concepts/metric-cardinality|a metric with unbounded label values]] can collapse the monitoring system outright. Too little data and too much data arrive at one destination — nobody can see anything — and both come from an ordinary change to a metric, made by someone with no reason to be thinking about monitoring at all.

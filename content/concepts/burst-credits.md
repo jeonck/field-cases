@@ -43,3 +43,5 @@ The other tell is **uniform degradation**: every query, every request type, ever
 - **Alert on the balance trend, not the floor.** At 5% you have hours. At 60% and falling for a week you have a capacity conversation.
 - **Prefer a fixed baseline over a burst budget.** `gp3` provides 3,000 IOPS independent of size; `t` instances can be set to unlimited mode, which converts the cliff into a bill.
 - **Size for the steady state, and treat burst as headroom you have already spent.** Anything that only works because credits exist is already over capacity; it has simply not been told yet.
+
+[[concepts/cfs-quota-throttling|CFS quota throttling]] is the same bargain on a different clock: a budget per 100ms window rather than a bucket that drains over weeks. Both are invisible on a utilisation graph, and the timescale decides how the failure announces itself. A throttled container is stopped and resumed a hundred times a second, so the symptom is instant and stationary; a credit bucket reaches zero on a day when nothing happened.

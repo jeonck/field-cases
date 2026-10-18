@@ -43,3 +43,7 @@ The only thing that makes this findable is recording *how* a decision was reache
 `source` and `age_s` turn an audit log into something you can ask questions of. Without them, an allow decision for a revoked principal is indistinguishable from an allow decision for a valid one — which is why [[problems/a-revoked-account-kept-working-for-four-hours|this class of failure is normally found by an access review rather than by monitoring]].
 
 The detector follows from that: join revocation timestamps against subsequent allow decisions, on a schedule. There is no live signal to alert on, because nothing fails.
+
+The table at the top of this page is [[concepts/dns-caching-layers|the DNS caching table]] with different names in it — a stack of layers, each honouring its own TTL rather than the one the source intended, and a total that nobody owns. And the reason there is nothing to alert on belongs with [[concepts/absent-data-is-not-zero|absent data]]: the healthy state and the failing state are identical from outside, so detection has to be a periodic comparison rather than a threshold on anything.
+
+Certificates have the same structure at smaller scale: [[concepts/certificate-chains|a chain]] is validated against revocation data that is itself cached, with a lifetime of its own, so a revoked certificate keeps being accepted for as long as any client holds a copy that is still in date.

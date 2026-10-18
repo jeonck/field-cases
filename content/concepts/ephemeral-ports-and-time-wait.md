@@ -51,3 +51,5 @@ The pattern is that nothing about the traffic volume changes — only whether ea
 4. Not `tcp_tw_recycle`. It was never safe behind NAT and was removed from Linux in 4.12; guides recommending it are describing a kernel from another decade.
 
 The same exhaustion happens one layer out, at a NAT gateway, where every host behind it shares one source IP and therefore one port range. The arithmetic is identical and the ceiling is shared — the connection-tracking table that gateway maintains has its own limits, described in [[concepts/conntrack|conntrack]].
+
+Reuse is the first mitigation above, and it has a failure mode of its own at the far extreme. A connection held open longer than the other end intends to keep it produces [[concepts/idle-timeout-ordering|requests written into a socket the server is already closing]]. Too little reuse exhausts a local resource; too much reuse uses a dead one. They look nothing alike, so when connection handling is suspect the useful question is not whether it is wrong but in which direction.

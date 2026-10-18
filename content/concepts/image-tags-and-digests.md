@@ -43,3 +43,5 @@ More than one line means more than one build is running — the failure behind [
 - `imagePullPolicy: Always` is a mitigation, not a fix: it costs a registry round trip per pod start, and it still trusts whatever the tag points at right now.
 
 Tags remain useful as human-facing labels. They are not identifiers, and treating them as identifiers is the whole bug.
+
+A tag is a name with caches underneath it, which makes this the same failure as [[concepts/dns-caching-layers|a DNS record that moved while something held the old address]]. Both are updated correctly at the source and leave a holder downstream that was never notified. In both, the durable fix is to stop referring to the name: a digest here, a client that actually re-resolves there.

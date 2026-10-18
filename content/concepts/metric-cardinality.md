@@ -57,3 +57,5 @@ scrape_configs:
 ```
 
 A target that exceeds `sample_limit` fails **its own** scrape and is marked down. Without it, one badly-labelled service degrades the monitoring of everything else — the limit's real purpose is to make the blast radius the target rather than the cluster.
+
+The failure at the other end of the same system is [[concepts/absent-data-is-not-zero|a series that stops arriving]], where alerts evaluate to nothing and report it as health. Unbounded data and absent data are opposite causes with one effect, and a dashboard built to display values cannot show either — one has too much to store and the other has none to show, and both leave a panel that a tired reader takes for calm.

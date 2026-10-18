@@ -45,3 +45,7 @@ In Envoy, the response flag names it outright — `UC` is upstream connection te
 ```
 
 Retrying on reset hides it, and is a legitimate mitigation for idempotent requests. It is not a fix: the connection is still being closed underneath the client, and now every occurrence costs an extra round trip instead of an error.
+
+The opposite mistake costs just as much. A client that opens a fresh connection per request never meets this race and instead exhausts [[concepts/ephemeral-ports-and-time-wait|the ephemeral port range]]. Keep-alive is wrong in one direction when connections are too short-lived and wrong in the other when they outlive the server's patience, and the two share no symptoms at all.
+
+The version of this with both limits in a single file is [[concepts/consumer-group-rebalancing|Kafka's two liveness deadlines]] — a consumer that heartbeats perfectly is still evicted for not polling. There the disagreeing settings sit side by side and careful reading finds them; here they belong to two systems and nothing shows them together.

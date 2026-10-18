@@ -27,3 +27,5 @@ SHOW plan_cache_mode;                       -- 'auto' by default
 ```
 
 The five-execution threshold is a hard-coded constant, not a tunable. `plan_cache_mode` is the only lever, and it is all-or-nothing per session or per role.
+
+The five-execution threshold belongs to server-side prepared statements, which are also the feature that breaks under [[concepts/connection-pooling-modes|transaction pooling]] — for an entirely unrelated reason and with the same driver setting as a fix. A statement that disappears is a pooler problem; a statement that quietly receives a worse plan is this one. Disabling prepared statements silences both, which is convenient and an excellent way never to learn which you had.

@@ -37,3 +37,5 @@ Breaking it requires removing load, not fixing the trigger: shed requests, cut r
 - **Circuit breaking** on the caller, so a persistently failing dependency stops receiving traffic instead of receiving more of it.
 
 The measurement that names this failure in one number is the ratio of requests arriving at a dependency to requests arriving at its caller. At rest it is a little over 1. During amplification it is 4, and no other failure mode produces that.
+
+Two related ideas sit close to this one. A [[concepts/cache-stampede|cache stampede]] is the same herd synchronised by a clock rather than by a failure, so jitter appears in both fixes while the real control differs — a budget here, single-flight there. And the property that makes a retry safe at all is idempotency, which is the same property that makes a [[concepts/wall-clock-schedules|job that fires twice]] harmless: in both cases it is cheaper to make the duplicate cost nothing than to prevent every cause of duplication.

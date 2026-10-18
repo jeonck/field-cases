@@ -26,3 +26,5 @@ getent hosts db-writer.example.internal   # fresh resolution, bypasses the runti
 ```
 
 If that disagrees with where the process is actually connecting (`ss -tnp | grep <pid>`), the problem is above the resolver, not in it.
+
+The shape generalises well past DNS. [[concepts/image-tags-and-digests|A container image tag]] is also a mutable name with caches beneath it, and a node that pulled it earlier keeps serving the old bytes for as long as it holds them. In both cases the name was updated correctly and something that had already resolved it was never told, which is why the durable fix rhymes: refer to the content rather than to the name.

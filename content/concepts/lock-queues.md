@@ -53,3 +53,5 @@ ALTER ROLE analytics SET idle_in_transaction_session_timeout = '60s';
 ```
 
 Neither setting makes the lock conflict go away. They decide whether an unlucky moment costs one migration or one table.
+
+A queue consumes something besides patience. Every blocked session holds its connection while it waits, so a lock queue drains the [[concepts/connection-pooling-modes|connection pool]], and the first symptom to reach the application is usually connection exhaustion rather than anything mentioning locks. That is worth expecting in advance, because it sends the investigation to the pool — which will be full of blocked queries and not of leaked ones.

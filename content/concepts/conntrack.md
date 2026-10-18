@@ -19,3 +19,5 @@ The third one is why [[problems/dns-lookups-intermittently-take-exactly-5-second
 conntrack -S                        # per-CPU counters: insert_failed, drop, early_drop
 sysctl net.netfilter.nf_conntrack_count net.netfilter.nf_conntrack_max
 ```
+
+It is also not the only finite table in the outbound path. [[concepts/ephemeral-ports-and-time-wait|The ephemeral port range]] runs out in much the same way — a fixed ceiling, no error until it is reached, and nothing in any application metric counting down toward it. When a host suddenly cannot open connections, both deserve checking in the same minute, and the failure text usually separates them: a dropped packet produces a timeout, an exhausted port range produces `EADDRNOTAVAIL`.

@@ -29,3 +29,5 @@ ls -l /proc/<pid>/fd | grep deleted
 Two ways out, and they are not equivalent: closing or reopening the descriptor (a signal, a reload, a restart) frees the blocks properly, while truncating through the descriptor — `: > /proc/<pid>/fd/N` — reclaims the space instantly without touching the process, at the cost of discarding whatever it contained. The first is the fix; the second is what you do at 3am when the volume is at 100% and the process must not be restarted.
 
 The same mechanic is why a temporary file created and immediately unlinked is the standard way to get private scratch space that cannot leak: it disappears the moment the process exits, however it exits.
+
+`du` against `df` is one instance of a reading error worth recognising in general: two measurements that are each correct, taken by tools answering different questions, where the gap between them is the whole diagnosis. [[concepts/jvm-native-memory|Java heap usage against process RSS]] is the same comparison one layer up, and it goes unmade for the same reason — the first number is the one on the dashboard, and it looks fine.
