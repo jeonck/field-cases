@@ -54,7 +54,7 @@ Two changes, three weeks and two teams apart, neither of which is a problem alon
 | --- | --- | --- |
 | The downstream is down or saturated | Its p99 and error rate were normal apart from deliberate 429s. It never dropped a connection | rejected |
 | DNS resolution failure for the downstream | The error contains a resolved IP — resolution had already succeeded | rejected in one second, once the message was actually read |
-| Conntrack table full on the node | `conntrack -S` and `nf_conntrack_count` well under the maximum. Plausible enough to check first, given [[problems/dns-lookups-intermittently-take-exactly-5-seconds|a previous incident on this cluster]] | rejected |
+| Conntrack table full on the node | `conntrack -S` and `nf_conntrack_count` well under the maximum. Plausible enough to check first, given [[problems/dns-lookups-intermittently-take-exactly-5-seconds\|a previous incident on this cluster]] | rejected |
 | File descriptor limit | `ulimit -n` is 65536, process holds ~9k open | rejected |
 | Ephemeral port exhaustion against one 4-tuple | `ss -tan state time-wait \| wc -l` at 27,994 against a 28,232-port range | **accepted** |
 

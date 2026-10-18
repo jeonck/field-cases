@@ -47,7 +47,7 @@ Neither side is misconfigured on its own. The Go server setting an explicit idle
 | --- | --- | --- |
 | The upstream pods are restarting or being OOMKilled | Zero restarts across three weeks; `kubectl describe` clean | rejected |
 | The upstream is overloaded and shedding | The failure rate is **inversely** correlated with traffic — worst at 04:00, best at peak. Overload does not do that | rejected, and the inversion is the entire clue |
-| Sidecar CPU throttling delaying responses | `cpu.stat` throttle ratio under 1%, after [[problems/p99-latency-spikes-while-cpu-utilisation-sits-at-30-percent|a previous incident]] made this the reflex check on this cluster | rejected |
+| Sidecar CPU throttling delaying responses | `cpu.stat` throttle ratio under 1%, after [[problems/p99-latency-spikes-while-cpu-utilisation-sits-at-30-percent\|a previous incident]] made this the reflex check on this cluster | rejected |
 | mTLS handshake failures between sidecars | Would show as `UF` with a TLS error, not `UC` on an established connection; handshake metrics flat | rejected |
 | Requests are being written onto connections the upstream is closing | Every failing request is on a connection idle for ~60s. Reproduced deliberately: request, `sleep 61`, request — the second fails | **accepted** |
 
